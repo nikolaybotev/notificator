@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+enum NotificationType {
+  platform_update
+  comment_tag
+  access_granted
+  join_workspace
+}
+
+model Notification {
+  id            Int             @id @default(autoincrement())
+  type          NotificationType
+  isRead        Boolean         @default(false) @map("is_read")
+  personName    String?         @map("person_name")
+  releaseNumber String?         @map("release_number")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("notifications")
+} 
