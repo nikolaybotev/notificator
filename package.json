@@ -1,7 +1,9 @@
 {
   "scripts": {
+    "bootstrap": "vercel env pull",
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "tsx scripts/migrate.ts",
     "start": "next start",
     "clean": "rm -rf .next node_modules",
     "deploy": "vercel deploy --prod"
@@ -17,9 +19,12 @@
     "@types/node": "22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "@vercel/postgres": "^0.10.0",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.7",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
     "typescript": "5.7.2",
     "vercel": "^33.5.5"
   }
