@@ -28,6 +28,11 @@ A modern web application built with Next.js 14 and Radix UI.
    npm run start
    ```
 
+4. Deploy to Vercel:
+   ```bash
+   npm run deploy
+   ```
+
 ## Available Scripts
 
 - `npm run dev` - Start development server
