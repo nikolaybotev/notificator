@@ -15,18 +15,40 @@ const LINKS = [
 
 type Notification = {
   id: number
-  text: string
-  type: 'user' | 'system'
+  type: 'platform_update' | 'comment_tag' | 'access_granted' | 'join_workspace'
   isRead: boolean
+  personName?: string
+  releaseNumber?: string
 }
 
 export default function Header() {
   const [open, setOpen] = React.useState(false)
   const [dialogOpen, setDialogOpen] = React.useState(false)
   const [notifications, setNotifications] = React.useState<Notification[]>([
-    { id: 1, text: "John commented on your post", type: 'user', isRead: false },
-    { id: 2, text: "System maintenance scheduled", type: 'system', isRead: true },
-    { id: 3, text: "New feature available", type: 'system', isRead: false },
+    { 
+      id: 1, 
+      type: 'comment_tag', 
+      personName: 'John Smith',
+      isRead: false 
+    },
+    { 
+      id: 2, 
+      type: 'platform_update',
+      releaseNumber: '2.1.0',
+      isRead: true 
+    },
+    { 
+      id: 3, 
+      type: 'access_granted',
+      personName: 'Sarah Wilson',
+      isRead: false 
+    },
+    { 
+      id: 4, 
+      type: 'join_workspace',
+      personName: 'Mike Johnson',
+      isRead: false 
+    }
   ])
 
   const unreadCount = notifications.filter(n => !n.isRead).length
