@@ -39,7 +39,7 @@ export default function NotificationsPopover({ unreadCount, notifications, dialo
             <Flex key={notification.id} 
               align="center" 
               gap="2" 
-              className={`p-2 hover:bg-gray-50 ${!notification.isRead ? 'bg-blue-50' : ''}`}
+              className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50' : ''}`}
             >
               {notification.type === 'user' ? (
                 <PersonIcon width="16" height="16" />
