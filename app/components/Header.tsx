@@ -3,7 +3,7 @@
 import React from "react"
 import { Container, Flex, Link, Button, DropdownMenu } from "@radix-ui/themes"
 import NextLink from "next/link"
-import { HamburgerMenuIcon } from "@radix-ui/react-icons"
+import { HamburgerMenuIcon, BellIcon } from "@radix-ui/react-icons"
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -14,6 +14,7 @@ const LINKS = [
 
 export default function Header() {
   const [open, setOpen] = React.useState(false)
+  const unreadCount = 3 // You can make this dynamic later
 
   return (
     <Container size="3" className="py-4">
@@ -51,6 +52,17 @@ export default function Header() {
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </div>
+
+        {/* Bell Icon with notification badge */}
+        <Button variant="ghost" size="2" className="relative">
+          <BellIcon width="20" height="20" />
+          {unreadCount > 0 && (
+            <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+              {unreadCount > 9 ? '' : unreadCount}
+            </div>
+          )}
+        </Button>
+
       </Flex>
     </Container>
   )
