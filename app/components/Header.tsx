@@ -31,6 +31,12 @@ export default function Header() {
 
   const unreadCount = notifications.filter(n => !n.isRead).length
 
+  const handleNotificationRead = (id: number) => {
+    setNotifications(notifications.map(n => 
+      n.id === id ? { ...n, isRead: true } : n
+    ))
+  }
+
   return (
     <Container size="3" className="py-4">
       <Flex gap="6" align="center" justify="between" className="h-10">
@@ -74,6 +80,7 @@ export default function Header() {
           notifications={notifications}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
+          onNotificationRead={handleNotificationRead}
         />
       </Flex>
     </Container>

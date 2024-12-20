@@ -17,11 +17,25 @@ type Props = {
   notifications: Notification[]
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
+  onNotificationRead: (id: number) => void
 }
 
-export default function NotificationsPopover({ unreadCount, notifications, dialogOpen, setDialogOpen }: Props) {
+export default function NotificationsPopover({ 
+  unreadCount, 
+  notifications, 
+  dialogOpen, 
+  setDialogOpen,
+  onNotificationRead 
+}: Props) {
+  const [open, setOpen] = React.useState(false)
+
+  const handleNotificationClick = (id: number) => {
+    onNotificationRead(id)
+    setOpen(false)
+  }
+
   return (
-    <Popover.Root>
+    <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger>
         <Button variant="ghost" size="2" className="relative">
           <BellIcon width="20" height="20" />
@@ -40,6 +54,7 @@ export default function NotificationsPopover({ unreadCount, notifications, dialo
               align="center" 
               gap="2" 
               className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50' : ''}`}
+              onClick={() => handleNotificationClick(notification.id)}
             >
               {notification.type === 'user' ? (
                 <PersonIcon width="16" height="16" />
