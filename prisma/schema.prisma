@@ -17,10 +17,10 @@ enum NotificationType {
 model Notification {
   id            Int             @id @default(autoincrement())
   type          NotificationType
-  isRead        Boolean         @default(false) @map("is_read")
+  isRead        Boolean         @map("is_read") @default(false)
   personName    String?         @map("person_name")
   releaseNumber String?         @map("release_number")
-  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz
+  createdAt     DateTime        @map("created_at") @default(now()) @db.Timestamptz
 
   @@map("notifications")
 } 
