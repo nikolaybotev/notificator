@@ -2,18 +2,15 @@
 
 import React from "react"
 import { AlertDialog, Button, Flex } from "@radix-ui/themes"
+import { useNotifications } from '@/providers/notifications'
 
-type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  releaseNumber: string
-}
+export default function ReleaseNotesDialog() {
+  const { releaseNotesDialogOpen, setReleaseNotesDialogOpen, selectedReleaseNumber } = useNotifications()
 
-export default function ReleaseNotesDialog({ open, onOpenChange, releaseNumber }: Props) {
   return (
-    <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
+    <AlertDialog.Root open={releaseNotesDialogOpen} onOpenChange={setReleaseNotesDialogOpen}>
       <AlertDialog.Content>
-        <AlertDialog.Title>{releaseNumber}</AlertDialog.Title>
+        <AlertDialog.Title>{selectedReleaseNumber}</AlertDialog.Title>
 
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>

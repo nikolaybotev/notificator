@@ -4,11 +4,7 @@ import React from "react"
 import { Button, Dialog, Flex, TextField, Select } from "@radix-ui/themes"
 import { PlusIcon } from "@radix-ui/react-icons"
 import { trpc } from '@/providers/trpc'
-
-type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
+import { useNotifications } from '@/providers/notifications'
 
 const NOTIFICATION_TYPES = [
   { value: 'platform_update', label: 'Platform Update' },
@@ -17,7 +13,8 @@ const NOTIFICATION_TYPES = [
   { value: 'join_workspace', label: 'Join Workspace' }
 ] as const
 
-export default function AddNotificationDialog({ open, onOpenChange }: Props) {
+export default function AddNotificationDialog() {
+  const { addNotificationsDialogOpen, setAddNotificationsDialogOpen } = useNotifications()
   const [type, setType] = React.useState<typeof NOTIFICATION_TYPES[number]['value']>('platform_update')
 
   const showPersonName = type === 'comment_tag' || type === 'access_granted' || type === 'join_workspace'
@@ -31,7 +28,7 @@ export default function AddNotificationDialog({ open, onOpenChange }: Props) {
     onSuccess: () => {
       utils.notifications.list.invalidate()
       utils.notifications.unreadCount.invalidate()
-      onOpenChange(false)
+      setAddNotificationsDialogOpen(false)
       setPersonName('')
       setReleaseNumber('')
     }
@@ -48,7 +45,7 @@ export default function AddNotificationDialog({ open, onOpenChange }: Props) {
   }
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root open={addNotificationsDialogOpen} onOpenChange={setAddNotificationsDialogOpen}>
       <Dialog.Trigger>
         <Button variant="soft" size="1">
           <PlusIcon width="16" height="16" />

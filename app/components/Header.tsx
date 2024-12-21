@@ -1,9 +1,9 @@
 'use client'
 
 import React from "react"
-import { Container, Flex, Link, Button, DropdownMenu, Popover, Dialog, TextField } from "@radix-ui/themes"
+import { Container, Flex, Link, Button, DropdownMenu } from "@radix-ui/themes"
 import NextLink from "next/link"
-import { HamburgerMenuIcon, BellIcon, PersonIcon, PlusIcon, InfoCircledIcon } from "@radix-ui/react-icons"
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import NotificationsPopover from "./NotificationsPopover"
 
 const LINKS = [
@@ -13,17 +13,8 @@ const LINKS = [
   { href: "/workspace", label: "Workspace" },
 ]
 
-type Notification = {
-  id: number
-  type: 'platform_update' | 'comment_tag' | 'access_granted' | 'join_workspace'
-  isRead: boolean
-  personName?: string
-  releaseNumber?: string
-}
-
 export default function Header() {
   const [open, setOpen] = React.useState(false)
-  const [dialogOpen, setDialogOpen] = React.useState(false)
 
   return (
     <Container size="3" className="py-4">
@@ -52,9 +43,7 @@ export default function Header() {
               {LINKS.map(({ href, label }) => (
                 <DropdownMenu.Item key={href} onClick={() => setOpen(false)} className="hover:bg-inherit">
                   <NextLink href={href} passHref legacyBehavior>
-                    <Link>
-                      {label}
-                    </Link>
+                    <Link>{label}</Link>
                   </NextLink>
                 </DropdownMenu.Item>
               ))}
@@ -63,10 +52,7 @@ export default function Header() {
         </div>
 
         {/* Bell Icon with Popover */}
-        <NotificationsPopover 
-          dialogOpen={dialogOpen}
-          setDialogOpen={setDialogOpen}
-        />
+        <NotificationsPopover />
       </Flex>
     </Container>
   )

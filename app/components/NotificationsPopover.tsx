@@ -2,30 +2,20 @@
 
 import React from "react"
 import { useRouter } from "next/navigation"
-import { Flex, Button, Popover, Dialog, TextField, AlertDialog } from "@radix-ui/themes"
-import { BellIcon, PersonIcon, PlusIcon, InfoCircledIcon } from "@radix-ui/react-icons"
+import { Flex, Button, Popover } from "@radix-ui/themes"
+import { BellIcon, PersonIcon, InfoCircledIcon } from "@radix-ui/react-icons"
+import { trpc } from '@/providers/trpc'
+import { useNotifications, type Notification } from '@/providers/notifications'
 import AddNotificationDialog from "./AddNotificationDialog"
 import ReleaseNotesDialog from "./ReleaseNotesDialog"
-import { trpc } from '@/providers/trpc'
 
-type Notification = {
-  id: number
-  type: 'platform_update' | 'comment_tag' | 'access_granted' | 'join_workspace'
-  isRead: boolean
-  personName?: string
-  releaseNumber?: string
-}
-
-type Props = {
-  dialogOpen: boolean
-  setDialogOpen: (open: boolean) => void
-}
-
-export default function NotificationsPopover({ dialogOpen, setDialogOpen }: Props) {
+export default function NotificationsPopover() {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
-  const [alertOpen, setAlertOpen] = React.useState(false)
-  const [selectedRelease, setSelectedRelease] = React.useState<string>('')
+  const { 
+    setReleaseNotesDialogOpen, 
+    setSelectedReleaseNumber 
+  } = useNotifications()
 
   const { data: notifications } = trpc.notifications.list.useQuery()
   const { data: unreadCount = 0 } = trpc.notifications.unreadCount.useQuery()
@@ -43,8 +33,8 @@ export default function NotificationsPopover({ dialogOpen, setDialogOpen }: Prop
 
     switch (notification.type) {
       case 'platform_update':
-        setSelectedRelease(notification.releaseNumber || '')
-        setAlertOpen(true)
+        setSelectedReleaseNumber(notification.releaseNumber || '')
+        setReleaseNotesDialogOpen(true)
         break
       case 'comment_tag':
         router.push('/comments')
@@ -117,17 +107,13 @@ export default function NotificationsPopover({ dialogOpen, setDialogOpen }: Prop
             </div>
 
             <Flex justify="end" className="border-t pt-2 mt-2">
-              <AddNotificationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+              <AddNotificationDialog />
             </Flex>
           </Flex>
         </Popover.Content>
       </Popover.Root>
 
-      <ReleaseNotesDialog 
-        open={alertOpen}
-        onOpenChange={setAlertOpen}
-        releaseNumber={selectedRelease}
-      />
+      <ReleaseNotesDialog />
     </>
   )
 } 

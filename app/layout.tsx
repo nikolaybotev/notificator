@@ -6,6 +6,7 @@ import { Theme } from "@radix-ui/themes"
 import "@radix-ui/themes/styles.css"
 import Header from "./components/Header"
 import { TRPCProvider } from '@/providers/trpc'
+import { NotificationsProvider } from '@/providers/notifications'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,10 +24,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className} style={{ padding: "20px" }}>
         <TRPCProvider>
-          <Theme appearance="light" accentColor="blue" radius="medium">
-            <Header />
-            {children}
-          </Theme>
+          <NotificationsProvider>
+            <Theme appearance="light" accentColor="blue" radius="medium">
+              <Header />
+              {children}
+            </Theme>
+          </NotificationsProvider>
         </TRPCProvider>
       </body>
     </html>
