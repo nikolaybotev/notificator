@@ -27,14 +27,16 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
   const [selectedReleaseNumber, setSelectedReleaseNumber] = useState('')
 
   return (
-    <NotificationsContext.Provider value={{
-      addNotificationsDialogOpen,
-      setAddNotificationsDialogOpen,
-      releaseNotesDialogOpen,
-      setReleaseNotesDialogOpen,
-      selectedReleaseNumber,
-      setSelectedReleaseNumber
-    }}>
+    <NotificationsContext.Provider
+      value={{
+        addNotificationsDialogOpen,
+        setAddNotificationsDialogOpen,
+        releaseNotesDialogOpen,
+        setReleaseNotesDialogOpen,
+        selectedReleaseNumber,
+        setSelectedReleaseNumber,
+      }}
+    >
       {children}
     </NotificationsContext.Provider>
   )
@@ -46,4 +48,4 @@ export function useNotifications() {
     throw new Error('useNotifications must be used within a NotificationsProvider')
   }
   return context
-} 
+}

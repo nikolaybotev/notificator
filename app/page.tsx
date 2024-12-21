@@ -1,6 +1,6 @@
-import React from "react"
-import { Container, Heading, Text, Button, Flex } from "@radix-ui/themes"
-import { ArrowRightIcon } from "@radix-ui/react-icons"
+import React from 'react'
+import { Container, Heading, Text, Button, Flex } from '@radix-ui/themes'
+import { ArrowRightIcon } from '@radix-ui/react-icons'
 
 export default function Home() {
   return (
@@ -26,4 +26,4 @@ export default function Home() {
       </Container>
     </main>
   )
-} 
+}

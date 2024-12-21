@@ -1,28 +1,24 @@
-import React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { Theme } from "@radix-ui/themes"
-import "@radix-ui/themes/styles.css"
-import Header from "./components/Header"
+import React from 'react'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { Theme } from '@radix-ui/themes'
+import '@radix-ui/themes/styles.css'
+import Header from './components/Header'
 import { TRPCProvider } from '@/providers/trpc'
 import { NotificationsProvider } from '@/providers/notifications'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Modern Next.js App",
-  description: "Built with Next.js 14 and Radix UI",
+  title: 'Modern Next.js App',
+  description: 'Built with Next.js 14 and Radix UI',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className} style={{ padding: "20px" }}>
+      <body className={inter.className} style={{ padding: '20px' }}>
         <TRPCProvider>
           <NotificationsProvider>
             <Theme appearance="light" accentColor="blue" radius="medium">
@@ -34,4 +30,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-} 
+}

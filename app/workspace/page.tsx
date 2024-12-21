@@ -1,5 +1,5 @@
-import React from "react"
-import { Heading, Container } from "@radix-ui/themes"
+import React from 'react'
+import { Heading, Container } from '@radix-ui/themes'
 
 export default function WorkspacePage() {
   return (
@@ -9,4 +9,4 @@ export default function WorkspacePage() {
       </Heading>
     </Container>
   )
-} 
+}

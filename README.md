@@ -13,32 +13,38 @@ A modern web application built with Next.js 14 and Radix UI.
 ## Getting Started
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
 
 2. Bootstrap the project (Vercel development setup):
+
    ```bash
    npm run bootstrap
    ```
 
 3. Run the development server:
+
    ```bash
    npm run dev
    ```
 
 4. Build for production:
+
    ```bash
    npm run build
    npm run start
    ```
 
 5. Deploy to Vercel (Development environment):
+
    ```bash
    npm run deploy
    ```
 
 6. Deploy to Vercel (Production environment):
+
    ```bash
    npm run deploy -- --prod
    ```
@@ -57,6 +63,7 @@ A modern web application built with Next.js 14 and Radix UI.
 - `npm run clean` - Clean build files and dependencies
 - `npm run deploy` - Deploy to Vercel (Development environment)
 - `npm run deploy -- --prod` - Deploy to Vercel (Production environment)
+
 ## Project Structure
 
 ```text

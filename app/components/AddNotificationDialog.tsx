@@ -1,19 +1,19 @@
 'use client'
 
-import React from "react"
-import { Button, Dialog, Flex, TextField, Select, Text } from "@radix-ui/themes"
-import { PlusIcon } from "@radix-ui/react-icons"
+import React from 'react'
+import { Button, Dialog, Flex, TextField, Select, Text } from '@radix-ui/themes'
+import { PlusIcon } from '@radix-ui/react-icons'
 import { trpc } from '@/providers/trpc'
 import { useNotifications } from '@/providers/notifications'
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { notificationSchema, type NotificationInput } from '@/lib/schemas'
 
 const NOTIFICATION_TYPES = [
   { value: 'platform_update', label: 'Platform Update' },
   { value: 'comment_tag', label: 'Comment Tag' },
   { value: 'access_granted', label: 'Access Granted' },
-  { value: 'join_workspace', label: 'Join Workspace' }
+  { value: 'join_workspace', label: 'Join Workspace' },
 ] as const
 
 export default function AddNotificationDialog() {
@@ -31,13 +31,14 @@ export default function AddNotificationDialog() {
   } = useForm<NotificationInput>({
     resolver: zodResolver(notificationSchema),
     defaultValues: {
-      type: 'platform_update'
+      type: 'platform_update',
     },
-    mode: 'onSubmit'
+    mode: 'onSubmit',
   })
 
   const type = watch('type')
-  const showPersonName = type === 'comment_tag' || type === 'access_granted' || type === 'join_workspace'
+  const showPersonName =
+    type === 'comment_tag' || type === 'access_granted' || type === 'join_workspace'
   const showReleaseNumber = type === 'platform_update'
 
   React.useEffect(() => {
@@ -45,7 +46,7 @@ export default function AddNotificationDialog() {
       setValue('releaseNumber', undefined)
     }
     if (!showPersonName) {
-     setValue('personName', undefined)
+      setValue('personName', undefined)
     }
     clearErrors()
   }, [showPersonName, showReleaseNumber, setValue, clearErrors])
@@ -55,7 +56,7 @@ export default function AddNotificationDialog() {
       utils.notifications.list.invalidate()
       utils.notifications.unreadCount.invalidate()
       setAddNotificationsDialogOpen(false)
-    }
+    },
   })
 
   React.useEffect(() => {
@@ -69,8 +70,8 @@ export default function AddNotificationDialog() {
   }
 
   return (
-    <Dialog.Root 
-      open={addNotificationsDialogOpen} 
+    <Dialog.Root
+      open={addNotificationsDialogOpen}
       onOpenChange={(open) => {
         setAddNotificationsDialogOpen(open)
         if (!open) reset()
@@ -101,7 +102,11 @@ export default function AddNotificationDialog() {
                       ))}
                     </Select.Content>
                   </Select.Root>
-                  {error && <Text color="red" size="2">{error.message}</Text>}
+                  {error && (
+                    <Text color="red" size="2">
+                      {error.message}
+                    </Text>
+                  )}
                 </>
               )}
             />
@@ -113,13 +118,13 @@ export default function AddNotificationDialog() {
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <TextField.Root>
-                      <TextField.Input 
-                        autoFocus={true}
-                        placeholder="Person name" 
-                        {...field}
-                      />
+                      <TextField.Input autoFocus={true} placeholder="Person name" {...field} />
                     </TextField.Root>
-                    {error && <Text color="red" size="2">{error.message}</Text>}
+                    {error && (
+                      <Text color="red" size="2">
+                        {error.message}
+                      </Text>
+                    )}
                   </>
                 )}
               />
@@ -132,13 +137,17 @@ export default function AddNotificationDialog() {
                 render={({ field, fieldState: { error } }) => (
                   <>
                     <TextField.Root>
-                      <TextField.Input 
+                      <TextField.Input
                         autoFocus={true}
-                        placeholder="Release number (e.g., 2.1.0)" 
+                        placeholder="Release number (e.g., 2.1.0)"
                         {...field}
                       />
                     </TextField.Root>
-                    {error && <Text color="red" size="2">{error.message}</Text>}
+                    {error && (
+                      <Text color="red" size="2">
+                        {error.message}
+                      </Text>
+                    )}
                   </>
                 )}
               />
@@ -163,4 +172,4 @@ export default function AddNotificationDialog() {
       </Dialog.Content>
     </Dialog.Root>
   )
-} 
+}

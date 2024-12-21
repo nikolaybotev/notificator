@@ -1,13 +1,13 @@
 'use client'
 
-import React from "react"
-import { useRouter } from "next/navigation"
-import { Flex, Button, Popover } from "@radix-ui/themes"
-import { BellIcon, PersonIcon, InfoCircledIcon } from "@radix-ui/react-icons"
+import React from 'react'
+import { useRouter } from 'next/navigation'
+import { Flex, Button, Popover } from '@radix-ui/themes'
+import { BellIcon, PersonIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import { trpc } from '@/providers/trpc'
 import { useNotifications, type Notification } from '@/providers/notifications'
-import AddNotificationDialog from "./AddNotificationDialog"
-import ReleaseNotesDialog from "./ReleaseNotesDialog"
+import AddNotificationDialog from './AddNotificationDialog'
+import ReleaseNotesDialog from './ReleaseNotesDialog'
 import { useQueryClient } from '@tanstack/react-query'
 
 export default function NotificationsPopover() {
@@ -19,19 +19,19 @@ export default function NotificationsPopover() {
 
   const { data: notifications } = trpc.notifications.list.useQuery(undefined, {
     staleTime: 1000 * 3,
-    refetchInterval: 1000 * 3
+    refetchInterval: 1000 * 3,
   })
 
   const { data: unreadCount = 0 } = trpc.notifications.unreadCount.useQuery(undefined, {
     staleTime: 1000 * 2,
-    refetchInterval: 1000 * 2
+    refetchInterval: 1000 * 2,
   })
 
   const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({
     onSuccess: () => {
       // Invalidate both queries
       queryClient.invalidateQueries({ queryKey: ['notifications', 'unread'] })
-    }
+    },
   })
 
   const handleNotificationClick = (notification: Notification) => {
@@ -60,22 +60,22 @@ export default function NotificationsPopover() {
       case 'platform_update':
         return {
           icon: <InfoCircledIcon width="16" height="16" />,
-          text: `New features - see what's new in ${notification.releaseNumber}`
+          text: `New features - see what's new in ${notification.releaseNumber}`,
         }
       case 'comment_tag':
         return {
           icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} tagged you in a comment`
+          text: `${notification.personName} tagged you in a comment`,
         }
       case 'access_granted':
         return {
           icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} shared a chat with you`
+          text: `${notification.personName} shared a chat with you`,
         }
       case 'join_workspace':
         return {
           icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} joined your workspace`
+          text: `${notification.personName} joined your workspace`,
         }
     }
   }
@@ -87,7 +87,7 @@ export default function NotificationsPopover() {
           <Button variant="ghost" size="2" className="relative">
             <BellIcon width="20" height="20" />
             {unreadCount > 0 && (
-              <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+              <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                 {unreadCount > 9 ? '' : unreadCount}
               </div>
             )}
@@ -95,25 +95,30 @@ export default function NotificationsPopover() {
         </Popover.Trigger>
 
         <Popover.Content>
-          <Flex direction="column" gap="2" style={{ maxWidth: '300px', maxHeight: 'calc(100vh - 120px)' }}>
+          <Flex
+            direction="column"
+            gap="2"
+            style={{ maxWidth: '300px', maxHeight: 'calc(100vh - 120px)' }}
+          >
             <div className="overflow-y-auto">
               {notifications?.map((notification) => {
                 const { icon, text } = getNotificationContent(notification)
                 return (
-                  <Flex key={notification.id} 
-                    align="center" 
-                    gap="2" 
-                    className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
+                  <Flex
+                    key={notification.id}
+                    align="center"
+                    gap="2"
+                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
                     onClick={() => handleNotificationClick(notification)}
                   >
                     {icon}
-                    <span className="text-sm truncate">{text}</span>
+                    <span className="truncate text-sm">{text}</span>
                   </Flex>
                 )
               })}
             </div>
 
-            <Flex justify="end" className="border-t pt-2 mt-2">
+            <Flex justify="end" className="mt-2 border-t pt-2">
               <AddNotificationDialog />
             </Flex>
           </Flex>
@@ -123,4 +128,4 @@ export default function NotificationsPopover() {
       <ReleaseNotesDialog />
     </>
   )
-} 
+}

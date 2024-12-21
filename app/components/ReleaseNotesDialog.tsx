@@ -1,11 +1,12 @@
 'use client'
 
-import React from "react"
-import { AlertDialog, Button, Flex } from "@radix-ui/themes"
+import React from 'react'
+import { AlertDialog, Button, Flex } from '@radix-ui/themes'
 import { useNotifications } from '@/providers/notifications'
 
 export default function ReleaseNotesDialog() {
-  const { releaseNotesDialogOpen, setReleaseNotesDialogOpen, selectedReleaseNumber } = useNotifications()
+  const { releaseNotesDialogOpen, setReleaseNotesDialogOpen, selectedReleaseNumber } =
+    useNotifications()
 
   return (
     <AlertDialog.Root open={releaseNotesDialogOpen} onOpenChange={setReleaseNotesDialogOpen}>
@@ -22,4 +23,4 @@ export default function ReleaseNotesDialog() {
       </AlertDialog.Content>
     </AlertDialog.Root>
   )
-} 
+}
