@@ -1,7 +1,7 @@
 INSERT INTO notifications ("type", is_read, person_name, release_number, created_at) 
 VALUES
   -- Platform updates
-  ('platform_update', false, NULL, '2.1.0', NOW() - INTERVAL '1 hour'),
+  ('platform_update', false, NULL, '2.1.0', NOW() - INTERVAL '1 minute'),
   ('platform_update', true, NULL, '2.0.0', NOW() - INTERVAL '2 days'),
   
   -- Comment tags
