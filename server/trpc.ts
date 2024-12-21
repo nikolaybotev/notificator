@@ -2,6 +2,7 @@ import { initTRPC } from '@trpc/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import superjson from 'superjson'
+import { notificationSchema } from '@/lib/schemas'
 
 const t = initTRPC.create({
   transformer: superjson
@@ -9,33 +10,6 @@ const t = initTRPC.create({
 
 export const router = t.router
 export const publicProcedure = t.procedure
-
-/**
- * Regular expression for validating Semantic Versioning (SemVer) format.
- * 
- * Format: MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]
- * - MAJOR, MINOR, PATCH: non-negative integers without leading zeros
- * - PRERELEASE: optional, dot-separated identifiers (alphanumeric and hyphens)
- * - BUILD: optional metadata (alphanumeric and hyphens)
- * 
- * Examples:
- * - Valid: 2.1.0, 1.0.0-alpha, 1.0.0-beta.11, 2.1.0+build.123
- * - Invalid: 2.1, 02.1.0, 2.1.0., 2.1.0-
- */
-const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
-
-const notificationInput = z.object({
-  type: z.enum(['platform_update', 'comment_tag', 'access_granted', 'join_workspace']),
-  personName: z.string().optional(),
-  releaseNumber: z.string()
-    .regex(semverRegex, 'Must be a valid semantic version (e.g., 2.1.0)')
-    .optional()
-}).refine(data => {
-  if (data.type === 'platform_update') {
-    return data.releaseNumber != null && data.personName == null;
-  }
-  return data.personName != null && data.releaseNumber == null;
-}, "Invalid data for notification type");
 
 export const appRouter = router({
   notifications: router({
@@ -62,7 +36,7 @@ export const appRouter = router({
         })
       }),
     create: publicProcedure
-      .input(notificationInput)
+      .input(notificationSchema)
       .mutation(async ({ input }) => {
         return prisma.notification.create({
           data: {
