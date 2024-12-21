@@ -20,8 +20,9 @@ export default function AddNotificationDialog() {
     watch,
     reset,
     setValue,
+    setError,
     clearErrors,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<NotificationInput>({
     resolver: zodResolver(notificationSchema),
     defaultValues: {
@@ -29,6 +30,8 @@ export default function AddNotificationDialog() {
     },
     mode: 'onSubmit',
   })
+
+  const [creating, setCreating] = React.useState(false)
 
   const type = watch('type')
   const showPersonName =
@@ -50,16 +53,19 @@ export default function AddNotificationDialog() {
       utils.notifications.list.invalidate()
       utils.notifications.unreadCount.invalidate()
       setAddNotificationsDialogOpen(false)
+      reset()
+    },
+    onError: (error) => {
+      console.log(`Error ${error}`)
+      setError('root', { message: 'Error creating notification' })
+    },
+    onSettled: () => {
+      setCreating(false)
     },
   })
 
-  React.useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset()
-    }
-  }, [isSubmitSuccessful, reset])
-
   const onSubmit = (data: NotificationInput) => {
+    setCreating(true)
     createNotification(data)
   }
 
@@ -68,7 +74,10 @@ export default function AddNotificationDialog() {
       open={addNotificationsDialogOpen}
       onOpenChange={(open) => {
         setAddNotificationsDialogOpen(open)
-        if (!open) reset()
+        if (!open) {
+          setCreating(false)
+          reset()
+        }
       }}
     >
       <Dialog.Trigger>
@@ -153,13 +162,21 @@ export default function AddNotificationDialog() {
               </Text>
             )}
 
+            {errors['root'] && (
+              <Text color="red" size="2">
+                {errors['root'].message}
+              </Text>
+            )}
+
             <Flex gap="3" justify="end">
               <Dialog.Close>
                 <Button variant="soft" color="gray" type="button">
                   Close
                 </Button>
               </Dialog.Close>
-              <Button type="submit">Create</Button>
+              <Button type="submit" disabled={creating}>
+                Create
+              </Button>
             </Flex>
           </Flex>
         </form>
