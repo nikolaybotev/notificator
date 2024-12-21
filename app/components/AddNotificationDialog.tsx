@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react"
-import { Button, Dialog, Flex, TextField, Select } from "@radix-ui/themes"
+import { Button, Dialog, Flex, TextField, Select, Text } from "@radix-ui/themes"
 import { PlusIcon } from "@radix-ui/react-icons"
 import { trpc } from '@/providers/trpc'
 import { useNotifications } from '@/providers/notifications'
@@ -24,6 +24,8 @@ export default function AddNotificationDialog() {
   const [releaseNumber, setReleaseNumber] = React.useState('')
   const utils = trpc.useUtils()
 
+  const [error, setError] = React.useState('')
+
   const { mutate: createNotification } = trpc.notifications.create.useMutation({
     onSuccess: () => {
       utils.notifications.list.invalidate()
@@ -31,6 +33,10 @@ export default function AddNotificationDialog() {
       setAddNotificationsDialogOpen(false)
       setPersonName('')
       setReleaseNumber('')
+      setError('')
+    },
+    onError: (error) => {
+      setError(error.message)
     }
   })
 
@@ -78,9 +84,21 @@ export default function AddNotificationDialog() {
 
           {showReleaseNumber && (
             <TextField.Root>
-              <TextField.Input placeholder="Release number" value={releaseNumber}
-              onChange={(e) => setReleaseNumber(e.target.value)} />
+              <TextField.Input 
+                placeholder="Release number (e.g., 2.1.0)" 
+                value={releaseNumber}
+                onChange={(e) => {
+                  setError('')
+                  setReleaseNumber(e.target.value)
+                }} 
+              />
             </TextField.Root>
+          )}
+
+          {error && (
+            <Text color="red" size="2">
+              {error}
+            </Text>
           )}
 
           <Flex gap="3" justify="end">
