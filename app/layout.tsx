@@ -5,6 +5,7 @@ import "./globals.css"
 import { Theme } from "@radix-ui/themes"
 import "@radix-ui/themes/styles.css"
 import Header from "./components/Header"
+import { TRPCProvider } from '@/providers/trpc'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} style={{ padding: "20px" }}>
-        <Theme appearance="light" accentColor="blue" radius="medium">
-          <Header />
-          {children}
-        </Theme>
+        <TRPCProvider>
+          <Theme appearance="light" accentColor="blue" radius="medium">
+            <Header />
+            {children}
+          </Theme>
+        </TRPCProvider>
       </body>
     </html>
   )

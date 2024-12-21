@@ -6,6 +6,7 @@ import { Flex, Button, Popover, Dialog, TextField, AlertDialog } from "@radix-ui
 import { BellIcon, PersonIcon, PlusIcon, InfoCircledIcon } from "@radix-ui/react-icons"
 import AddNotificationDialog from "./AddNotificationDialog"
 import ReleaseNotesDialog from "./ReleaseNotesDialog"
+import { trpc } from '@/providers/trpc'
 
 type Notification = {
   id: number
@@ -25,7 +26,6 @@ type Props = {
 
 export default function NotificationsPopover({ 
   unreadCount, 
-  notifications, 
   dialogOpen, 
   setDialogOpen,
   onNotificationRead 
@@ -35,8 +35,16 @@ export default function NotificationsPopover({
   const [alertOpen, setAlertOpen] = React.useState(false)
   const [selectedRelease, setSelectedRelease] = React.useState<string>('')
 
+  const { data: notifications } = trpc.notifications.list.useQuery()
+  const utils = trpc.useUtils()
+  const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({
+    onSuccess: () => {
+      utils.notifications.list.invalidate()
+    }
+  })
+
   const handleNotificationClick = (notification: Notification) => {
-    onNotificationRead(notification.id)
+    markAsRead(notification.id)
     setOpen(false)
 
     switch (notification.type) {
@@ -97,13 +105,13 @@ export default function NotificationsPopover({
 
         <Popover.Content>
           <Flex direction="column" gap="2" style={{ maxWidth: '300px' }}>
-            {notifications.map((notification) => {
+            {notifications?.map((notification) => {
               const { icon, text } = getNotificationContent(notification)
               return (
                 <Flex key={notification.id} 
                   align="center" 
                   gap="2" 
-                  className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50' : ''}`}
+                  className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
                   onClick={() => handleNotificationClick(notification)}
                 >
                   {icon}
