@@ -125,9 +125,9 @@ export default function AddNotificationDialog() {
               />
             )}
 
-            {errors.root && (
+            {errors[''] && (
               <Text color="red" size="2">
-                {errors.root.message}
+                {errors[''].message}
               </Text>
             )}
 
