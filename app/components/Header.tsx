@@ -24,40 +24,6 @@ type Notification = {
 export default function Header() {
   const [open, setOpen] = React.useState(false)
   const [dialogOpen, setDialogOpen] = React.useState(false)
-  const [notifications, setNotifications] = React.useState<Notification[]>([
-    { 
-      id: 1, 
-      type: 'comment_tag', 
-      personName: 'John Smith',
-      isRead: false 
-    },
-    { 
-      id: 2, 
-      type: 'platform_update',
-      releaseNumber: '2.1.0',
-      isRead: true 
-    },
-    { 
-      id: 3, 
-      type: 'access_granted',
-      personName: 'Sarah Wilson',
-      isRead: false 
-    },
-    { 
-      id: 4, 
-      type: 'join_workspace',
-      personName: 'Mike Johnson',
-      isRead: false 
-    }
-  ])
-
-  const unreadCount = notifications.filter(n => !n.isRead).length
-
-  const handleNotificationRead = (id: number) => {
-    setNotifications(notifications.map(n => 
-      n.id === id ? { ...n, isRead: true } : n
-    ))
-  }
 
   return (
     <Container size="3" className="py-4">
@@ -98,11 +64,8 @@ export default function Header() {
 
         {/* Bell Icon with Popover */}
         <NotificationsPopover 
-          unreadCount={unreadCount}
-          notifications={notifications}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
-          onNotificationRead={handleNotificationRead}
         />
       </Flex>
     </Container>

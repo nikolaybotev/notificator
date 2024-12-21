@@ -17,29 +17,23 @@ type Notification = {
 }
 
 type Props = {
-  unreadCount: number
-  notifications: Notification[]
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
-  onNotificationRead: (id: number) => void
 }
 
-export default function NotificationsPopover({ 
-  unreadCount, 
-  dialogOpen, 
-  setDialogOpen,
-  onNotificationRead 
-}: Props) {
+export default function NotificationsPopover({ dialogOpen, setDialogOpen }: Props) {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const [alertOpen, setAlertOpen] = React.useState(false)
   const [selectedRelease, setSelectedRelease] = React.useState<string>('')
 
   const { data: notifications } = trpc.notifications.list.useQuery()
+  const { data: unreadCount = 0 } = trpc.notifications.unreadCount.useQuery()
   const utils = trpc.useUtils()
   const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({
     onSuccess: () => {
       utils.notifications.list.invalidate()
+      utils.notifications.unreadCount.invalidate()
     }
   })
 

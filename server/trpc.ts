@@ -19,6 +19,13 @@ export const appRouter = router({
         }
       })
     }),
+    unreadCount: publicProcedure.query(async () => {
+      return prisma.notification.count({
+        where: {
+          isRead: false
+        }
+      })
+    }),
     markAsRead: publicProcedure
       .input(z.number())
       .mutation(async ({ input: id }) => {
