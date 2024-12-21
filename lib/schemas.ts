@@ -1,3 +1,4 @@
+import { NotificationType } from '@prisma/client'
 import { z } from 'zod'
 
 /**
@@ -17,7 +18,7 @@ export const semverRegex =
 
 export const notificationSchema = z
   .object({
-    type: z.enum(['platform_update', 'comment_tag', 'access_granted', 'join_workspace']),
+    type: z.enum(Object.values(NotificationType) as [string, ...string[]]),
     personName: z.string().trim().optional(),
     releaseNumber: z
       .string()

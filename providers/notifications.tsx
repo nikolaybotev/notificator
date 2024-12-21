@@ -1,10 +1,11 @@
 'use client'
 
+import { NotificationType } from '@prisma/client'
 import React, { createContext, useContext, useState } from 'react'
 
 export type Notification = {
   id: number
-  type: 'platform_update' | 'comment_tag' | 'access_granted' | 'join_workspace'
+  type: NotificationType
   isRead: boolean
   personName?: string
   releaseNumber?: string

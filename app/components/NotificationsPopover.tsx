@@ -3,12 +3,13 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Flex, Button, Popover } from '@radix-ui/themes'
-import { BellIcon, PersonIcon, InfoCircledIcon } from '@radix-ui/react-icons'
+import { BellIcon } from '@radix-ui/react-icons'
 import { trpc } from '@/providers/trpc'
 import { useNotifications, type Notification } from '@/providers/notifications'
 import AddNotificationDialog from './AddNotificationDialog'
 import ReleaseNotesDialog from './ReleaseNotesDialog'
 import { useQueryClient } from '@tanstack/react-query'
+import { NotificationTypeConfig } from '@/lib/notifications'
 
 export default function NotificationsPopover() {
   const router = useRouter()
@@ -38,45 +39,13 @@ export default function NotificationsPopover() {
     markAsRead(notification.id)
     setOpen(false)
 
-    switch (notification.type) {
-      case 'platform_update':
-        setSelectedReleaseNumber(notification.releaseNumber || '')
-        setReleaseNotesDialogOpen(true)
-        break
-      case 'comment_tag':
-        router.push('/comments')
-        break
-      case 'access_granted':
-        router.push('/chats')
-        break
-      case 'join_workspace':
-        router.push('/workspace')
-        break
-    }
-  }
+    const config = NotificationTypeConfig[notification.type]
 
-  const getNotificationContent = (notification: Notification) => {
-    switch (notification.type) {
-      case 'platform_update':
-        return {
-          icon: <InfoCircledIcon width="16" height="16" />,
-          text: `New features - see what's new`,
-        }
-      case 'comment_tag':
-        return {
-          icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} tagged you in a comment`,
-        }
-      case 'access_granted':
-        return {
-          icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} shared a chat with you`,
-        }
-      case 'join_workspace':
-        return {
-          icon: <PersonIcon width="16" height="16" />,
-          text: `${notification.personName} joined your workspace`,
-        }
+    if (notification.type === 'platform_update') {
+      setSelectedReleaseNumber(notification.releaseNumber || '')
+      setReleaseNotesDialogOpen(true)
+    } else if (config.route) {
+      router.push(config.route)
     }
   }
 
@@ -102,23 +71,27 @@ export default function NotificationsPopover() {
           >
             <div className="overflow-y-auto">
               {notifications?.map((notification) => {
-                const { icon, text } = getNotificationContent(notification)
+                const { Icon, color, getText } = NotificationTypeConfig[notification.type]
                 return (
                   <Flex
                     key={notification.id}
                     align="center"
                     gap="2"
-                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
+                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-100 dark:bg-blue-900' : ''}`}
                     onClick={() => handleNotificationClick(notification)}
                   >
-                    {icon}
-                    <span className="truncate text-sm">{text}</span>
+                    <Icon
+                      width="32"
+                      height="32"
+                      className={`bg-${color} rounded-md p-2 text-white`}
+                    />
+                    <span className={`truncate text-sm`}>{getText(notification)}</span>
                   </Flex>
                 )
               })}
             </div>
 
-            <Flex justify="end" className="mt-2 border-t pt-2">
+            <Flex justify="end" className="mt-2">
               <AddNotificationDialog />
             </Flex>
           </Flex>

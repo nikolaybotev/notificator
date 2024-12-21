@@ -8,13 +8,7 @@ import { useNotifications } from '@/providers/notifications'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { notificationSchema, type NotificationInput } from '@/lib/schemas'
-
-const NOTIFICATION_TYPES = [
-  { value: 'platform_update', label: 'Platform Update' },
-  { value: 'comment_tag', label: 'Comment Tag' },
-  { value: 'access_granted', label: 'Access Granted' },
-  { value: 'join_workspace', label: 'Join Workspace' },
-] as const
+import { NotificationTypeConfig } from '@/lib/notifications'
 
 export default function AddNotificationDialog() {
   const { addNotificationsDialogOpen, setAddNotificationsDialogOpen } = useNotifications()
@@ -78,8 +72,8 @@ export default function AddNotificationDialog() {
       }}
     >
       <Dialog.Trigger>
-        <Button variant="soft" size="1">
-          <PlusIcon width="16" height="16" />
+        <Button variant="soft" size="3">
+          <PlusIcon width="20" height="20" />
         </Button>
       </Dialog.Trigger>
 
@@ -95,7 +89,7 @@ export default function AddNotificationDialog() {
                   <Select.Root value={field.value} onValueChange={field.onChange}>
                     <Select.Trigger />
                     <Select.Content>
-                      {NOTIFICATION_TYPES.map(({ value, label }) => (
+                      {Object.entries(NotificationTypeConfig).map(([value, { label }]) => (
                         <Select.Item key={value} value={value}>
                           {label}
                         </Select.Item>

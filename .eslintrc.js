@@ -20,6 +20,17 @@ module.exports = {
       version: 'detect'
     }
   },
+  overrides: [
+    {
+      files: ['*.config.js'],
+      env: { node: true },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
+        'import/no-commonjs': 'off'
+      }
+    }
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
