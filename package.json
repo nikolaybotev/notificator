@@ -1,12 +1,13 @@
 {
   "scripts": {
+    "bootstrap": "vercel link && vercel env pull",
     "dev": "next dev",
     "build": "next build",
     "postbuild": "tsx scripts/migrate.ts",
     "start": "next start",
     "clean": "rm -rf .next node_modules",
-    "deploy": "vercel deploy --prod",
-    "postinstall": "vercel env pull && prisma generate"
+    "deploy": "vercel deploy",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -37,6 +38,6 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "5.7.2",
-    "vercel": "^33.5.5"
+    "vercel": "^39.2.2"
   }
 }
