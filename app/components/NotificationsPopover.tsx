@@ -98,21 +98,23 @@ export default function NotificationsPopover({ dialogOpen, setDialogOpen }: Prop
         </Popover.Trigger>
 
         <Popover.Content>
-          <Flex direction="column" gap="2" style={{ maxWidth: '300px' }}>
-            {notifications?.map((notification) => {
-              const { icon, text } = getNotificationContent(notification)
-              return (
-                <Flex key={notification.id} 
-                  align="center" 
-                  gap="2" 
-                  className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
-                  onClick={() => handleNotificationClick(notification)}
-                >
-                  {icon}
-                  <span className="text-sm truncate">{text}</span>
-                </Flex>
-              )
-            })}
+          <Flex direction="column" gap="2" style={{ maxWidth: '300px', maxHeight: 'calc(100vh - 120px)' }}>
+            <div className="overflow-y-auto">
+              {notifications?.map((notification) => {
+                const { icon, text } = getNotificationContent(notification)
+                return (
+                  <Flex key={notification.id} 
+                    align="center" 
+                    gap="2" 
+                    className={`p-2 cursor-default ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-950' : ''}`}
+                    onClick={() => handleNotificationClick(notification)}
+                  >
+                    {icon}
+                    <span className="text-sm truncate">{text}</span>
+                  </Flex>
+                )
+              })}
+            </div>
 
             <Flex justify="end" className="border-t pt-2 mt-2">
               <AddNotificationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
