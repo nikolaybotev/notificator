@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import { ThemeProvider } from 'next-themes'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Theme } from '@radix-ui/themes'
@@ -21,10 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className} style={{ padding: '20px' }}>
         <TRPCProvider>
           <NotificationsProvider>
-            <Theme appearance="light" accentColor="blue" radius="medium">
-              <Header />
-              {children}
-            </Theme>
+            <ThemeProvider attribute="class">
+              <Theme accentColor="blue" radius="medium">
+                <Header />
+                {children}
+              </Theme>
+            </ThemeProvider>
           </NotificationsProvider>
         </TRPCProvider>
       </body>

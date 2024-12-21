@@ -77,7 +77,7 @@ export default function NotificationsPopover() {
                     key={notification.id}
                     align="center"
                     gap="2"
-                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-100 dark:bg-blue-900' : ''}`}
+                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-100 dark:bg-blue-950' : ''}`}
                     onClick={() => handleNotificationClick(notification)}
                   >
                     <Icon

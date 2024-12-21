@@ -7,6 +7,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'media',
   safelist: [
     ...colorNames.map(color => `bg-${color}`),
     ...colorNames.map(color => `text-${color}`),
