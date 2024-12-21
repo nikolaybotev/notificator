@@ -11,7 +11,7 @@ export type NotificationTypeConfig = {
   route?: string
 }
 
-export const NotificationTypeConfig: Record<NotificationType, NotificationTypeConfig> = {
+export const notificationTypes: Record<NotificationType, NotificationTypeConfig> = {
   platform_update: {
     label: 'Platform Update',
     Icon: InfoCircledIcon,

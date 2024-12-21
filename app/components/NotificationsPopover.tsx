@@ -9,7 +9,7 @@ import { useNotifications, type Notification } from '@/providers/notifications'
 import AddNotificationDialog from './AddNotificationDialog'
 import ReleaseNotesDialog from './ReleaseNotesDialog'
 import { useQueryClient } from '@tanstack/react-query'
-import { NotificationTypeConfig } from '@/lib/notifications'
+import { notificationTypes } from '@/lib/notifications'
 
 export default function NotificationsPopover() {
   const router = useRouter()
@@ -39,13 +39,13 @@ export default function NotificationsPopover() {
     markAsRead(notification.id)
     setOpen(false)
 
-    const config = NotificationTypeConfig[notification.type]
+    const { route } = notificationTypes[notification.type]
 
     if (notification.type === 'platform_update') {
       setSelectedReleaseNumber(notification.releaseNumber || '')
       setReleaseNotesDialogOpen(true)
-    } else if (config.route) {
-      router.push(config.route)
+    } else if (route) {
+      router.push(route)
     }
   }
 
@@ -71,7 +71,7 @@ export default function NotificationsPopover() {
           >
             <div className="overflow-y-auto">
               {notifications?.map((notification) => {
-                const { Icon, color, getText } = NotificationTypeConfig[notification.type]
+                const { Icon, color, getText } = notificationTypes[notification.type]
                 return (
                   <Flex
                     key={notification.id}

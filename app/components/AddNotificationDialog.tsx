@@ -8,7 +8,7 @@ import { useNotifications } from '@/providers/notifications'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { notificationSchema, type NotificationInput } from '@/lib/schemas'
-import { NotificationTypeConfig } from '@/lib/notifications'
+import { notificationTypes } from '@/lib/notifications'
 
 export default function AddNotificationDialog() {
   const { addNotificationsDialogOpen, setAddNotificationsDialogOpen } = useNotifications()
@@ -89,7 +89,7 @@ export default function AddNotificationDialog() {
                   <Select.Root value={field.value} onValueChange={field.onChange}>
                     <Select.Trigger />
                     <Select.Content>
-                      {Object.entries(NotificationTypeConfig).map(([value, { label }]) => (
+                      {Object.entries(notificationTypes).map(([value, { label }]) => (
                         <Select.Item key={value} value={value}>
                           {label}
                         </Select.Item>
