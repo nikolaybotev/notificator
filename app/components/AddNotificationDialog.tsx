@@ -25,7 +25,9 @@ export default function AddNotificationDialog() {
     handleSubmit,
     watch,
     reset,
-    formState: { errors }
+    setValue,
+    clearErrors,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<NotificationInput>({
     resolver: zodResolver(notificationSchema),
     defaultValues: {
@@ -38,14 +40,29 @@ export default function AddNotificationDialog() {
   const showPersonName = type === 'comment_tag' || type === 'access_granted' || type === 'join_workspace'
   const showReleaseNumber = type === 'platform_update'
 
+  React.useEffect(() => {
+    if (!showReleaseNumber) {
+      setValue('releaseNumber', undefined)
+    }
+    if (!showPersonName) {
+     setValue('personName', undefined)
+    }
+    clearErrors()
+  }, [showPersonName, showReleaseNumber, setValue, clearErrors])
+
   const { mutate: createNotification } = trpc.notifications.create.useMutation({
     onSuccess: () => {
       utils.notifications.list.invalidate()
       utils.notifications.unreadCount.invalidate()
       setAddNotificationsDialogOpen(false)
-      reset()
     }
   })
+
+  React.useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
 
   const onSubmit = (data: NotificationInput) => {
     createNotification(data)
@@ -97,6 +114,7 @@ export default function AddNotificationDialog() {
                   <>
                     <TextField.Root>
                       <TextField.Input 
+                        autoFocus={true}
                         placeholder="Person name" 
                         {...field}
                       />
@@ -115,6 +133,7 @@ export default function AddNotificationDialog() {
                   <>
                     <TextField.Root>
                       <TextField.Input 
+                        autoFocus={true}
                         placeholder="Release number (e.g., 2.1.0)" 
                         {...field}
                       />
