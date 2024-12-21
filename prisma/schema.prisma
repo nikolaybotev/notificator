@@ -12,6 +12,8 @@ enum NotificationType {
   comment_tag
   access_granted
   join_workspace
+
+  @@map("notification_type")
 }
 
 model Notification {

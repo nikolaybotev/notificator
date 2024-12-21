@@ -3,6 +3,7 @@
 import React from "react"
 import { Button, Dialog, Flex, TextField, Select } from "@radix-ui/themes"
 import { PlusIcon } from "@radix-ui/react-icons"
+import { trpc } from '@/providers/trpc'
 
 type Props = {
   open: boolean
@@ -20,7 +21,31 @@ export default function AddNotificationDialog({ open, onOpenChange }: Props) {
   const [type, setType] = React.useState<typeof NOTIFICATION_TYPES[number]['value']>('platform_update')
 
   const showPersonName = type === 'comment_tag' || type === 'access_granted' || type === 'join_workspace'
-  const showVersion = type === 'platform_update'
+  const showReleaseNumber = type === 'platform_update'
+
+  const [personName, setPersonName] = React.useState('')
+  const [releaseNumber, setReleaseNumber] = React.useState('')
+  const utils = trpc.useUtils()
+
+  const { mutate: createNotification } = trpc.notifications.create.useMutation({
+    onSuccess: () => {
+      utils.notifications.list.invalidate()
+      utils.notifications.unreadCount.invalidate()
+      onOpenChange(false)
+      setPersonName('')
+      setReleaseNumber('')
+    }
+  })
+
+  const handleSubmit = () => {
+    if (!personName && !releaseNumber) return
+
+    createNotification({
+      type,
+      ...(showReleaseNumber ? { releaseNumber } : {}),
+      ...(showPersonName ? { personName } : {})
+    })
+  }
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -49,13 +74,15 @@ export default function AddNotificationDialog({ open, onOpenChange }: Props) {
 
           {showPersonName && (
             <TextField.Root>
-              <TextField.Input placeholder="Person name" />
+              <TextField.Input placeholder="Person name" value={personName}
+              onChange={(e) => setPersonName(e.target.value)} />
             </TextField.Root>
           )}
 
-          {showVersion && (
+          {showReleaseNumber && (
             <TextField.Root>
-              <TextField.Input placeholder="Release number" />
+              <TextField.Input placeholder="Release number" value={releaseNumber}
+              onChange={(e) => setReleaseNumber(e.target.value)} />
             </TextField.Root>
           )}
 
@@ -65,7 +92,7 @@ export default function AddNotificationDialog({ open, onOpenChange }: Props) {
                 Close
               </Button>
             </Dialog.Close>
-            <Button>Create</Button>
+            <Button onClick={handleSubmit}>Create</Button>
           </Flex>
         </Flex>
       </Dialog.Content>
