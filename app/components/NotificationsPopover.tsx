@@ -60,7 +60,7 @@ export default function NotificationsPopover() {
       case 'platform_update':
         return {
           icon: <InfoCircledIcon width="16" height="16" />,
-          text: `New features - see what's new in ${notification.releaseNumber}`,
+          text: `New features - see what's new`,
         }
       case 'comment_tag':
         return {
