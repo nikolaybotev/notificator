@@ -16,7 +16,7 @@ export const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[
 
 export const notificationSchema = z.object({
   type: z.enum(['platform_update', 'comment_tag', 'access_granted', 'join_workspace']),
-  personName: z.string().optional(),
+  personName: z.string().trim().optional(),
   releaseNumber: z.string()
     .regex(semverRegex, 'Must be a valid semantic version (e.g., 2.1.0)')
     .optional()
@@ -24,7 +24,7 @@ export const notificationSchema = z.object({
   if (data.type === 'platform_update') {
     return data.releaseNumber != null && data.personName == null
   }
-  return data.personName != null && data.releaseNumber == null
+  return data.personName != null && data.personName.length > 0 && data.releaseNumber == null
 }, (data) => ({ message: data.type === 'platform_update' 
     ? "Please enter a release number."
     : "Please enter a person name." })
