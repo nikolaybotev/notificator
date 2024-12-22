@@ -67,7 +67,7 @@ export default function NotificationsPopover() {
           <Flex
             direction="column"
             gap="2"
-            style={{ maxWidth: '300px', maxHeight: 'calc(100dvh - 120px)' }}
+            style={{ maxWidth: 'calc(min(360px, 100dvw - 60px))', maxHeight: 'calc(100dvh - 120px)' }}
           >
             <div className="overflow-y-auto">
               {notifications?.map((notification) => {
