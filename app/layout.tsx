@@ -9,6 +9,7 @@ import Header from './components/Header'
 import { TRPCProvider } from '@/providers/trpc'
 import { NotificationsProvider } from '@/providers/notifications'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </NotificationsProvider>
         </TRPCProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
