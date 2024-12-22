@@ -8,6 +8,7 @@ import '@radix-ui/themes/styles.css'
 import Header from './components/Header'
 import { TRPCProvider } from '@/providers/trpc'
 import { NotificationsProvider } from '@/providers/notifications'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </ThemeProvider>
           </NotificationsProvider>
         </TRPCProvider>
+        <Analytics />
       </body>
     </html>
   )
