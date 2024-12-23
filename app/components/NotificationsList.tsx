@@ -16,25 +16,20 @@ type Props = {
 export default function NotificationsList({ onNotificationClick }: Props) {
   const { ref, inView } = useInView()
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = trpc.notifications.list.useInfiniteQuery(
-    {
-      limit: notificationQueryConfig.pageSize
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      staleTime: notificationQueryConfig.listStaleTime,
-      refetchInterval: notificationQueryConfig.listRefetchInterval,
-    }
-  )
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    trpc.notifications.list.useInfiniteQuery(
+      {
+        limit: notificationQueryConfig.pageSize,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        staleTime: notificationQueryConfig.listStaleTime,
+        refetchInterval: notificationQueryConfig.listRefetchInterval,
+      }
+    )
 
   const notifications = React.useMemo(() => {
-    return data?.pages.flatMap(page => page.items) ?? []
+    return data?.pages.flatMap((page) => page.items) ?? []
   }, [data])
 
   React.useEffect(() => {
@@ -44,10 +39,10 @@ export default function NotificationsList({ onNotificationClick }: Props) {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const renderLoadingSpinner = () => (
-      <Flex justify="center" py="4">
-        <UpdateIcon className="h-4 w-4 animate-spin" />
-      </Flex>
-    )
+    <Flex justify="center" py="4">
+      <UpdateIcon className="h-4 w-4 animate-spin" />
+    </Flex>
+  )
 
   return (
     <div className="overflow-y-auto">
@@ -76,4 +71,4 @@ export default function NotificationsList({ onNotificationClick }: Props) {
       )}
     </div>
   )
-} 
+}

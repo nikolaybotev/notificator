@@ -22,7 +22,7 @@ export const appRouter = router({
       )
       .query(async ({ input }) => {
         const { cursor, limit } = input
-        
+
         const items = await prisma.notification.findMany({
           take: limit + 1,
           cursor: cursor ? { id: cursor } : undefined,

@@ -18,9 +18,10 @@ export type { Notification, NotificationType }
 export const semverRegex =
   /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
 
-export const notificationTypeKeys = Object.keys(
-  NotificationType
-) as [NotificationType, ...NotificationType[]]
+export const notificationTypeKeys = Object.keys(NotificationType) as [
+  NotificationType,
+  ...NotificationType[],
+]
 
 export const notificationSchema = z
   .object({
