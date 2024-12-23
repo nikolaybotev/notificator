@@ -5,24 +5,19 @@ import { useRouter } from 'next/navigation'
 import { Flex, Button, Popover } from '@radix-ui/themes'
 import { BellIcon } from '@radix-ui/react-icons'
 import { trpc } from '@/providers/trpc'
-import { Notification } from '@/lib/schemas'
+import { type Notification } from '@/lib/schemas'
 import { useNotifications } from '@/providers/notifications'
 import AddNotificationDialog from './AddNotificationDialog'
 import ReleaseNotesDialog from './ReleaseNotesDialog'
+import NotificationsList from './NotificationsList'
 import { useQueryClient } from '@tanstack/react-query'
 import { notificationTypes } from '@/lib/notifications'
 
 export default function NotificationsPopover() {
   const router = useRouter()
   const queryClient = useQueryClient()
-
   const [open, setOpen] = React.useState(false)
   const { setReleaseNotesDialogOpen, setSelectedReleaseNumber } = useNotifications()
-
-  const { data: notifications } = trpc.notifications.list.useQuery(undefined, {
-    staleTime: 1000 * 3,
-    refetchInterval: 1000 * 3,
-  })
 
   const { data: unreadCount = 0 } = trpc.notifications.unreadCount.useQuery(undefined, {
     staleTime: 1000 * 2,
@@ -31,7 +26,6 @@ export default function NotificationsPopover() {
 
   const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({
     onSuccess: () => {
-      // Invalidate both queries
       queryClient.invalidateQueries({ queryKey: ['notifications', 'unread'] })
     },
   })
@@ -73,27 +67,7 @@ export default function NotificationsPopover() {
               maxHeight: 'calc(100dvh - 120px)',
             }}
           >
-            <div className="overflow-y-auto">
-              {notifications?.map((notification) => {
-                const { Icon, color, getText } = notificationTypes[notification.type]
-                return (
-                  <Flex
-                    key={notification.id}
-                    align="center"
-                    gap="2"
-                    className={`cursor-default p-2 ${!notification.isRead ? 'bg-blue-100 dark:bg-blue-950' : ''}`}
-                    onClick={() => handleNotificationClick(notification)}
-                  >
-                    <Icon
-                      width="32"
-                      height="32"
-                      className={`bg-${color} rounded-md p-2 text-white`}
-                    />
-                    <span className={`truncate text-sm`}>{getText(notification)}</span>
-                  </Flex>
-                )
-              })}
-            </div>
+            <NotificationsList onNotificationClick={handleNotificationClick} />
 
             <Flex justify="end" className="mt-2">
               <AddNotificationDialog />

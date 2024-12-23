@@ -13,13 +13,35 @@ export const publicProcedure = t.procedure
 
 export const appRouter = router({
   notifications: router({
-    list: publicProcedure.query(async () => {
-      return prisma.notification.findMany({
-        orderBy: {
-          createdAt: 'desc',
-        },
-      })
-    }),
+    list: publicProcedure
+      .input(
+        z.object({
+          cursor: z.number().optional(),
+          limit: z.number().min(1).max(50).default(10),
+        })
+      )
+      .query(async ({ input }) => {
+        const { cursor, limit } = input
+        
+        const items = await prisma.notification.findMany({
+          take: limit + 1,
+          cursor: cursor ? { id: cursor } : undefined,
+          orderBy: {
+            id: 'desc',
+          },
+        })
+
+        let nextCursor: typeof cursor | undefined = undefined
+        if (items.length > limit) {
+          const nextItem = items.pop()
+          nextCursor = nextItem!.id
+        }
+
+        return {
+          items,
+          nextCursor,
+        }
+      }),
     unreadCount: publicProcedure.query(async () => {
       return prisma.notification.count({
         where: {
