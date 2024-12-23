@@ -10,6 +10,7 @@ import { TRPCProvider } from '@/providers/trpc'
 import { NotificationsProvider } from '@/providers/notifications'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import NotificationsPrefetch from './components/NotificationsPrefetch'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Theme accentColor="blue" radius="medium">
                 <Header />
                 {children}
+                <NotificationsPrefetch />
               </Theme>
             </ThemeProvider>
           </NotificationsProvider>
