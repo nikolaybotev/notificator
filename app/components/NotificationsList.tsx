@@ -42,14 +42,14 @@ export default function NotificationsList({ onNotificationClick }: Props) {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  const renderLoadingSpinner = () => (
+      <Flex justify="center" py="4">
+        <UpdateIcon className="h-4 w-4 animate-spin" />
+      </Flex>
+    )
+
   return (
     <div className="overflow-y-auto">
-      {isLoading && (
-        <Flex justify="center" py="4">
-          <UpdateIcon className="h-4 w-4 animate-spin" />
-        </Flex>
-      )}
-
       {notifications.map((notification) => {
         const { Icon, color, getText } = notificationTypes[notification.type]
         return (
@@ -66,13 +66,11 @@ export default function NotificationsList({ onNotificationClick }: Props) {
         )
       })}
 
+      {isLoading && renderLoadingSpinner()}
+
       {hasNextPage && (
         <div ref={ref} className="h-8 w-full">
-          {isFetchingNextPage && (
-            <Flex justify="center" py="2">
-              <UpdateIcon className="h-4 w-4 animate-spin" />
-            </Flex>
-          )}
+          {isFetchingNextPage && renderLoadingSpinner()}
         </div>
       )}
     </div>
