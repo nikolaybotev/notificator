@@ -1,15 +1,6 @@
 'use client'
 
-import { NotificationType } from '@prisma/client'
 import React, { createContext, useContext, useState } from 'react'
-
-export type Notification = {
-  id: number
-  type: NotificationType
-  isRead: boolean
-  personName?: string
-  releaseNumber?: string
-}
 
 type NotificationsContextType = {
   addNotificationsDialogOpen: boolean

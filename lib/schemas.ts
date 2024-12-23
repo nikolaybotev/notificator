@@ -1,5 +1,7 @@
-import { NotificationType, type NotificationType as NotificationTypeEnum } from '@prisma/client'
+import { Notification, NotificationType } from '@prisma/client'
 import { z } from 'zod'
+
+export type { Notification, NotificationType }
 
 /**
  * Regular expression for validating Semantic Versioning (SemVer) format.
@@ -16,11 +18,13 @@ import { z } from 'zod'
 export const semverRegex =
   /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
 
+export const notificationTypeKeys = Object.keys(
+  NotificationType
+) as [NotificationType, ...NotificationType[]]
+
 export const notificationSchema = z
   .object({
-    type: z.enum(
-      Object.keys(NotificationType) as [NotificationTypeEnum, ...NotificationTypeEnum[]]
-    ),
+    type: z.enum(notificationTypeKeys),
     personName: z.string().trim().optional(),
     releaseNumber: z
       .string()

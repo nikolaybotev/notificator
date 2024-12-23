@@ -1,6 +1,5 @@
 import { InfoCircledIcon, PersonIcon } from '@radix-ui/react-icons'
-import type { NotificationType } from '@prisma/client'
-import type { Notification } from '@/providers/notifications'
+import type { Notification, NotificationType } from '@/lib/schemas'
 import { COLORS } from './colors'
 
 export type NotificationTypeConfig = {
