@@ -12,6 +12,7 @@ import ReleaseNotesDialog from './ReleaseNotesDialog'
 import NotificationsList from './NotificationsList'
 import { useQueryClient } from '@tanstack/react-query'
 import { notificationTypes } from '@/lib/notifications'
+import { notificationQueryConfig } from '@/lib/notifications'
 
 export default function NotificationsPopover() {
   const router = useRouter()
@@ -20,8 +21,8 @@ export default function NotificationsPopover() {
   const { setReleaseNotesDialogOpen, setSelectedReleaseNumber } = useNotifications()
 
   const { data: unreadCount = 0 } = trpc.notifications.unreadCount.useQuery(undefined, {
-    staleTime: 1000 * 2,
-    refetchInterval: 1000 * 2,
+    staleTime: notificationQueryConfig.unreadStaleTime,
+    refetchInterval: notificationQueryConfig.unreadRefetchInterval,
   })
 
   const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({

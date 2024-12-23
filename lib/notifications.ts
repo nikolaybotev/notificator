@@ -2,6 +2,14 @@ import { InfoCircledIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { Notification, NotificationType } from '@/lib/schemas'
 import { COLORS } from './colors'
 
+export const notificationQueryConfig = {
+  listStaleTime: 1000 * 3, // 3 seconds
+  listRefetchInterval: 1000 * 3,
+  unreadStaleTime: 1000 * 2, // 2 seconds
+  unreadRefetchInterval: 1000 * 2,
+  pageSize: 10,
+} as const
+
 export type NotificationTypeConfig = {
   label: string
   Icon: typeof InfoCircledIcon | typeof PersonIcon

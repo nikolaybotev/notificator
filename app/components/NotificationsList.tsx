@@ -7,6 +7,7 @@ import { notificationTypes } from '@/lib/notifications'
 import { useInView } from 'react-intersection-observer'
 import { trpc } from '@/providers/trpc'
 import { UpdateIcon } from '@radix-ui/react-icons'
+import { notificationQueryConfig } from '@/lib/notifications'
 
 type Props = {
   onNotificationClick: (notification: Notification) => void
@@ -23,12 +24,12 @@ export default function NotificationsList({ onNotificationClick }: Props) {
     isLoading,
   } = trpc.notifications.list.useInfiniteQuery(
     {
-      limit: 10
+      limit: notificationQueryConfig.pageSize
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-      staleTime: 1000 * 3,
-      refetchInterval: 1000 * 3,
+      staleTime: notificationQueryConfig.listStaleTime,
+      refetchInterval: notificationQueryConfig.listRefetchInterval,
     }
   )
 
