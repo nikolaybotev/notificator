@@ -10,13 +10,12 @@ import { useNotifications } from '@/providers/notifications'
 import AddNotificationDialog from './AddNotificationDialog'
 import ReleaseNotesDialog from './ReleaseNotesDialog'
 import NotificationsList from './NotificationsList'
-import { useQueryClient } from '@tanstack/react-query'
 import { notificationTypes } from '@/lib/notifications'
 import { notificationQueryConfig } from '@/lib/notifications'
 
 export default function NotificationsPopover() {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const utils = trpc.useUtils()
   const [open, setOpen] = React.useState(false)
   const { setReleaseNotesDialogOpen, setSelectedReleaseNumber } = useNotifications()
 
@@ -27,7 +26,8 @@ export default function NotificationsPopover() {
 
   const { mutate: markAsRead } = trpc.notifications.markAsRead.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications', 'unread'] })
+      utils.notifications.unreadCount.invalidate()
+      utils.notifications.list.invalidate()
     },
   })
 
