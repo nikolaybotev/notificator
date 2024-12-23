@@ -15,7 +15,10 @@ import NotificationsPrefetch from './components/NotificationsPrefetch'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Modern Next.js App',
+  title: {
+    template: '%s | Notificator App',
+    default: 'Notificator App',
+  },
   description: 'Built with Next.js 14 and Radix UI',
 }
 
