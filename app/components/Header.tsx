@@ -5,16 +5,25 @@ import { Container, Flex, Link, Button, DropdownMenu } from '@radix-ui/themes'
 import NextLink from 'next/link'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import NotificationsPopover from './NotificationsPopover'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
-const LINKS = [
+const NAVIGATION_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/comments', label: 'Comments' },
   { href: '/chats', label: 'Chats' },
   { href: '/workspace', label: 'Workspace' },
-]
+] as const
 
 export default function Header() {
   const [open, setOpen] = React.useState(false)
+  const isSmallScreen = useMediaQuery('(min-width: 640px)')
+
+  // Close mobile navigation dropdown when screen size changes to sm or larger
+  React.useEffect(() => {
+    if (isSmallScreen) {
+      setOpen(false)
+    }
+  }, [isSmallScreen])
 
   return (
     <Container size="3" className="py-4">
@@ -22,7 +31,7 @@ export default function Header() {
         {/* Desktop Navigation */}
         <div className="hidden h-full items-center sm:flex">
           <Flex gap="6" align="center">
-            {LINKS.map(({ href, label }) => (
+            {NAVIGATION_LINKS.map(({ href, label }) => (
               <NextLink key={href} href={href} passHref legacyBehavior>
                 <Link>{label}</Link>
               </NextLink>
@@ -40,7 +49,7 @@ export default function Header() {
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content>
-              {LINKS.map(({ href, label }) => (
+              {NAVIGATION_LINKS.map(({ href, label }) => (
                 <DropdownMenu.Item
                   key={href}
                   onClick={() => setOpen(false)}
